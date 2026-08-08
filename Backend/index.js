@@ -29,17 +29,6 @@ app.get("/profile", authMiddleware, (req, res) => {
     res.json(req.user);
 });
 
-app.get(
-    "/workspaces/:workspaceId/test-membership",
-    authMiddleware,
-    membershipMiddleware,
-    (req, res) => {
-        res.json({
-            message: "Membership verified",
-            membership: req.membership
-        });
-    }
-);
 
 io.on("connection",(socket)=>{
     console.log("Connected:",socket.id);
