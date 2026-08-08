@@ -5,4 +5,5 @@ function Workspaces() {
         </div>
     );
 }
+
 export default Workspaces;
