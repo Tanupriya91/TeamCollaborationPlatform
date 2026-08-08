@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import workspaceRoutes from "./routes/workspaceRoutes.js";
+import { membershipMiddleware } from "./middleware/membershipMiddleware.js";
 
 dotenv.config();
 
@@ -27,6 +28,18 @@ app.get("/health",(req,res)=>{
 app.get("/profile", authMiddleware, (req, res) => {
     res.json(req.user);
 });
+
+app.get(
+    "/workspaces/:workspaceId/test-membership",
+    authMiddleware,
+    membershipMiddleware,
+    (req, res) => {
+        res.json({
+            message: "Membership verified",
+            membership: req.membership
+        });
+    }
+);
 
 io.on("connection",(socket)=>{
     console.log("Connected:",socket.id);
