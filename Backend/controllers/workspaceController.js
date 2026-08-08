@@ -6,35 +6,30 @@ export async function createWorkspace(req, res) {
 
         if (!name) {
             return res.status(400).json({
-                message: "Workspace name is required",
+                message: "Workspace name is required"
             });
         }
 
         const userId = req.user.uid;
 
-        // Create references first
         const workspaceRef = db.collection("workspaces").doc();
         const membershipRef = db.collection("memberships").doc();
 
-        // Create batch
         const batch = db.batch();
 
-        // Workspace document
         batch.set(workspaceRef, {
             name,
             createdBy: userId,
-            createdAt: new Date(),
+            createdAt: new Date()
         });
 
-        // Owner membership
         batch.set(membershipRef, {
             userId,
             workspaceId: workspaceRef.id,
             role: "owner",
-            joinedAt: new Date(),
+            joinedAt: new Date()
         });
 
-        // Commit both writes together
         await batch.commit();
 
         return res.status(201).json({
@@ -42,8 +37,8 @@ export async function createWorkspace(req, res) {
             workspace: {
                 id: workspaceRef.id,
                 name,
-                createdBy: userId,
-            },
+                createdBy: userId
+            }
         });
 
     } catch (error) {
@@ -51,7 +46,50 @@ export async function createWorkspace(req, res) {
 
         return res.status(500).json({
             message: "Failed to create workspace",
-            error: error.message,
+            error: error.message
+        });
+    }
+}
+
+
+export async function getWorkspaces(req, res) {
+    try {
+        const userId = req.user.uid;
+
+        const membershipsSnapshot = await db
+            .collection("memberships")
+            .where("userId", "==", userId)
+            .get();
+
+        const workspaces = [];
+
+        for (const membershipDoc of membershipsSnapshot.docs) {
+            const membership = membershipDoc.data();
+
+            const workspaceDoc = await db
+                .collection("workspaces")
+                .doc(membership.workspaceId)
+                .get();
+
+            if (workspaceDoc.exists) {
+                workspaces.push({
+                    id: workspaceDoc.id,
+                    ...workspaceDoc.data(),
+                    role: membership.role
+                });
+            }
+        }
+
+        return res.status(200).json({
+            workspaces
+        });
+
+    } catch (error) {
+        console.error("Get workspaces error:", error);
+
+        return res.status(500).json({
+            message: "Failed to get workspaces",
+            error: error.message
         });
     }
 }
