@@ -1,8 +1,13 @@
-function Workspaces() {
+import { useParams } from "react-router-dom";
+
+function Workspace() {
+    const { workspaceId } = useParams();
+
     return (
         <div>
-            <h1>Workspaces</h1>
+            <h1>Workspace</h1>
+            <p>Workspace ID: {workspaceId}</p>
         </div>
     );
 }
-export default Workspaces;
+export default Workspace;
