@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Workspaces from "./pages/Workspaces";
 import Workspace from "./pages/Workspace";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -14,9 +15,23 @@ function App() {
 
       <Route path="/signup" element={<Signup />} />
 
-      <Route path="/workspaces" element={<Workspaces />} />
+      <Route
+        path="/workspaces"
+        element={
+          <ProtectedRoute>
+            <Workspaces />
+          </ProtectedRoute>
+        }
+      />
 
-      <Route path="/workspace/:workspaceId" element={<Workspace />} />
+      <Route
+        path="/workspace/:workspaceId"
+        element={
+          <ProtectedRoute>
+            <Workspace />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
