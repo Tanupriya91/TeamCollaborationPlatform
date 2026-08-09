@@ -18,9 +18,9 @@ function App() {
       <Route
         path="/workspaces"
         element={
-          <ProtectedRoute>
+          
             <Workspaces />
-          </ProtectedRoute>
+          
         }
       />
 
