@@ -30,3 +30,42 @@ export async function apiFetch(endpoint, options = {}) {
 
     return data;
 }
+
+
+export async function getProjects(workspaceId, token) {
+    const response = await fetch(
+        `http://localhost:3000/workspaces/${workspaceId}/projects`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+    }
+
+    return response.json();
+}
+
+export async function createProject(workspaceId, data, token) {
+    const response = await fetch(
+        `http://localhost:3000/workspaces/${workspaceId}/projects`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        }
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to create project");
+    }
+
+    return response.json();
+}
