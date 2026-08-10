@@ -7,6 +7,7 @@ import { authMiddleware } from "./middleware/authMiddleware.js";
 import workspaceRoutes from "./routes/workspaceRoutes.js";
 import { membershipMiddleware } from "./middleware/membershipMiddleware.js";
 import projectRoutes from "./routes/projectRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,10 @@ app.use("/workspaces", workspaceRoutes);
 app.use(
     "/workspaces/:workspaceId/projects",
     projectRoutes
+);
+app.use(
+    "/workspaces/:workspaceId/projects/:projectId/tasks",
+    taskRoutes
 );
 
 const httpServer = createServer(app);
