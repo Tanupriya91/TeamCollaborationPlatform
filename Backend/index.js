@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import workspaceRoutes from "./routes/workspaceRoutes.js";
 import { membershipMiddleware } from "./middleware/membershipMiddleware.js";
+import projectRoutes from "./routes/projectRoutes.js";
 
 dotenv.config();
 
@@ -13,6 +14,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/workspaces", workspaceRoutes);
+app.use(
+    "/workspaces/:workspaceId/projects",
+    projectRoutes
+);
 
 const httpServer = createServer(app);
 
