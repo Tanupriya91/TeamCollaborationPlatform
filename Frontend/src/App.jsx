@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Workspaces from "./pages/Workspaces";
 import Workspace from "./pages/Workspace";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
@@ -23,6 +24,15 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+    path="/workspace/:workspaceId/projects"
+    element={
+        <ProtectedRoute>
+            <Projects />
+        </ProtectedRoute>
+    }
+/>
 
       <Route
         path="/workspace/:workspaceId"
